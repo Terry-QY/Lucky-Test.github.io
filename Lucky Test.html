@@ -1,0 +1,771 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>小红书爆款趣味测试 · 老公合格率/恋爱人格/今日幸运指数</title>
+<meta name="description" content="全网刷屏的趣味测试：老公合格率测试、恋爱人格倾向测试、今日幸运指数测试。测完生成专属海报，分享给TA看看。仅供娱乐。">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%23FF5A6E'/%3E%3Ctext x='32' y='44' font-size='34' text-anchor='middle' fill='white' font-family='sans-serif' font-weight='bold'%3E%3F%3C/text%3E%3C/svg%3E">
+<style>
+:root{
+  --coral:#FF5A6E;
+  --peach:#FF8A5C;
+  --pink:#FFC2CE;
+  --cream:#FFF6F3;
+  --card:#FFFFFF;
+  --ink:#33202A;
+  --sub:#8A6E79;
+  --gold:#FFB84D;
+  --line:#F4DCE2;
+  --ok:#2EC4B6;
+  --warn:#FFA94D;
+  --bad:#FF5A6E;
+  --radius:22px;
+  --shadow:0 10px 30px rgba(255,90,110,.10);
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{height:100%}
+body{
+  font-family:"PingFang SC","Hiragino Sans GB","Microsoft YaHei","Noto Sans SC",sans-serif;
+  background:linear-gradient(160deg,#FFE8E4 0%,#FFF6F3 40%,#FFEAF0 100%);
+  color:var(--ink);
+  -webkit-font-smoothing:antialiased;
+}
+#app{
+  max-width:480px;
+  margin:0 auto;
+  min-height:100vh;
+  position:relative;
+  background:transparent;
+  padding-bottom:env(safe-area-inset-bottom);
+}
+.screen{display:none;padding:0 20px 28px}
+.screen.active{display:block;animation:rise .35s ease both}
+@keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+@keyframes pop{0%{transform:scale(.85);opacity:0}70%{transform:scale(1.04)}100%{transform:scale(1);opacity:1}}
+@keyframes floaty{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
+@keyframes barfill{from{width:0}}
+@keyframes shine{to{background-position:200% center}}
+.btn{
+  display:block;width:100%;padding:15px 18px;border:0;border-radius:16px;
+  font-size:16px;font-weight:700;font-family:inherit;cursor:pointer;
+  transition:transform .12s ease,box-shadow .12s ease,background .2s;
+}
+.btn:active{transform:scale(.97)}
+.btn-primary{
+  background:linear-gradient(135deg,var(--coral),var(--peach));
+  color:#fff;box-shadow:0 8px 20px rgba(255,90,110,.32);
+}
+.btn-ghost{background:#fff;color:var(--ink);box-shadow:var(--shadow);border:1px solid var(--line)}
+.btn-row{display:flex;gap:10px;margin-top:14px}
+.btn-row .btn{flex:1}
+
+/* ===== 首页 ===== */
+.hero{padding:34px 4px 6px;text-align:center}
+.hero-badge{
+  display:inline-flex;align-items:center;gap:6px;
+  background:#fff;border:1px solid var(--line);border-radius:999px;
+  padding:6px 14px;font-size:12px;font-weight:700;color:var(--coral);
+  box-shadow:var(--shadow);
+}
+.hero-badge svg{width:14px;height:14px}
+.hero h1{
+  margin-top:16px;font-size:32px;line-height:1.25;font-weight:800;letter-spacing:-.5px;
+  background:linear-gradient(120deg,var(--coral),var(--peach));
+  -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
+}
+.hero p{margin-top:10px;font-size:14px;color:var(--sub);font-weight:500}
+.hero .ticker{margin-top:18px;font-size:12px;color:var(--coral);font-weight:600;animation:floaty 2.6s ease-in-out infinite}
+
+.card{
+  background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);
+  padding:20px;margin-top:18px;cursor:pointer;border:1px solid rgba(244,220,226,.6);
+  transition:transform .15s ease;
+}
+.card:active{transform:scale(.98)}
+.card-top{display:flex;align-items:center;gap:14px}
+.card-emoji{
+  width:56px;height:56px;border-radius:18px;flex:none;
+  display:flex;align-items:center;justify-content:center;font-size:28px;
+  background:linear-gradient(135deg,#FFF0EC,#FFE3E9);
+}
+.card h3{font-size:19px;font-weight:800;line-height:1.3}
+.card-tag{
+  display:inline-block;margin-top:6px;font-size:11px;font-weight:700;color:var(--coral);
+  background:#FFF0EC;padding:3px 9px;border-radius:999px;
+}
+.card-hook{margin-top:12px;font-size:13.5px;color:var(--sub);line-height:1.55;padding-top:12px;border-top:1px dashed var(--line)}
+.card-arrow{float:right;font-size:12px;font-weight:700;color:var(--coral);margin-top:2px}
+.disc{margin-top:26px;font-size:11px;color:#C0A6AE;text-align:center;line-height:1.7}
+
+/* ===== 答题页 ===== */
+.quiz-head{display:flex;align-items:center;gap:12px;padding-top:20px}
+.back{
+  width:36px;height:36px;border-radius:12px;border:1px solid var(--line);background:#fff;
+  display:flex;align-items:center;justify-content:center;cursor:pointer;flex:none;
+}
+.back svg{width:16px;height:16px;stroke:var(--ink)}
+.quiz-title{font-size:14px;font-weight:700;flex:1}
+.quiz-count{font-size:12px;font-weight:700;color:var(--sub)}
+.progress-track{height:8px;background:#FFE0E6;border-radius:99px;margin-top:16px;overflow:hidden}
+.progress-fill{height:100%;width:0;border-radius:99px;background:linear-gradient(90deg,var(--coral),var(--peach));animation:barfill .4s ease both}
+.q-card{
+  background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);
+  padding:26px 20px;margin-top:22px;text-align:center;border:1px solid rgba(244,220,226,.6);
+}
+.q-emoji{font-size:46px;line-height:1;animation:floaty 2.4s ease-in-out infinite}
+.q-text{margin-top:16px;font-size:20px;font-weight:800;line-height:1.45}
+.q-sub{margin-top:8px;font-size:12px;color:var(--sub)}
+.options{margin-top:18px;display:flex;flex-direction:column;gap:12px}
+.opt{
+  width:100%;text-align:left;padding:15px 16px;border-radius:16px;border:1.5px solid var(--line);
+  background:#fff;font-size:15px;font-weight:600;font-family:inherit;color:var(--ink);cursor:pointer;
+  display:flex;align-items:center;gap:12px;transition:border-color .15s,background .15s,transform .12s;
+}
+.opt:active{transform:scale(.98)}
+.opt.sel{border-color:var(--coral);background:#FFF4F2;font-weight:800}
+.opt-key{
+  width:28px;height:28px;border-radius:10px;flex:none;font-size:13px;font-weight:800;
+  display:flex;align-items:center;justify-content:center;background:#FFF0EC;color:var(--coral);
+}
+.opt.sel .opt-key{background:linear-gradient(135deg,var(--coral),var(--peach));color:#fff}
+
+/* ===== 结果页 ===== */
+.result-wrap{text-align:center;padding-top:16px}
+.result-card{
+  background:var(--card);border-radius:24px;box-shadow:var(--shadow);
+  padding:30px 20px 26px;border:1px solid rgba(244,220,226,.6);position:relative;overflow:hidden;
+}
+.result-card::before{
+  content:"";position:absolute;inset:0 0 auto 0;height:6px;
+  background:linear-gradient(90deg,var(--coral),var(--peach),var(--gold),var(--coral));
+  background-size:200% 100%;animation:shine 3s linear infinite;
+}
+.r-label{font-size:12px;font-weight:700;color:var(--sub);letter-spacing:2px}
+.r-emoji{font-size:52px;margin-top:12px;animation:pop .5s ease both}
+.r-level{margin-top:10px;font-size:24px;font-weight:800}
+.r-score{
+  margin-top:14px;font-size:60px;font-weight:900;line-height:1;letter-spacing:-1px;
+  color:var(--coral);
+}
+.r-score .unit{font-size:20px;font-weight:700;color:var(--sub);letter-spacing:0}
+.r-bar{height:10px;background:#FFE0E6;border-radius:99px;margin:16px auto 0;max-width:260px;overflow:hidden}
+.r-bar i{display:block;height:100%;border-radius:99px;background:linear-gradient(90deg,var(--coral),var(--peach));width:0;transition:width 1s ease .3s}
+.r-desc{margin-top:18px;font-size:14.5px;line-height:1.7;color:#5A4250;text-align:left;background:#FFF9F7;border-radius:16px;padding:16px}
+.r-quote{margin-top:14px;font-size:13px;color:var(--sub);line-height:1.6;text-align:left;padding:0 4px}
+.actions{margin-top:20px}
+.toast{
+  position:fixed;left:50%;bottom:48px;transform:translateX(-50%) translateY(20px);
+  background:rgba(51,32,42,.92);color:#fff;font-size:13px;font-weight:600;
+  padding:11px 20px;border-radius:999px;opacity:0;pointer-events:none;
+  transition:all .25s ease;z-index:99;max-width:82%;text-align:center;
+}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.footer-note{margin-top:24px;font-size:11px;color:#C0A6AE;text-align:center;line-height:1.8}
+</style>
+</head>
+<body>
+<div id="app">
+  <!-- ===== 视图：首页 ===== -->
+  <section class="screen active" id="view-home">
+    <div class="hero">
+      <div class="hero-badge">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h7l-1 8 10-12h-7l1-8z"/></svg>
+        趣味实验室 · 全网疯传
+      </div>
+      <h1>测过的人都沉默了</h1>
+      <p>评分 / 人格 / 幸运指数，测完生成专属海报<br>分享给 TA 看看，快乐一下午</p>
+      <div class="ticker">🔥 本周已有 12.8w 人做过测试</div>
+    </div>
+
+    <div class="card" data-test="husband" onclick="startTest('husband')">
+      <div class="card-top">
+        <div class="card-emoji">💍</div>
+        <div>
+          <span class="card-tag">评分 · 亲密关系</span>
+          <h3>老公合格率测试</h3>
+        </div>
+      </div>
+      <div class="card-hook">及格线 60 分。不及格的，建议把结果发给他看看。<span class="card-arrow">开始测试 →</span></div>
+    </div>
+
+    <div class="card" data-test="personality" onclick="startTest('personality')">
+      <div class="card-top">
+        <div class="card-emoji">🎭</div>
+        <div>
+          <span class="card-tag">倾向 · 人格画像</span>
+          <h3>恋爱人格倾向测试</h3>
+        </div>
+      </div>
+      <div class="card-hook">你是粘人精、独行侠、恋爱脑还是清醒派？<span class="card-arrow">开始测试 →</span></div>
+    </div>
+
+    <div class="card" data-test="luck" onclick="startTest('luck')">
+      <div class="card-top">
+        <div class="card-emoji">🍀</div>
+        <div>
+          <span class="card-tag">运势 · 今日彩头</span>
+          <h3>今日幸运指数测试</h3>
+        </div>
+      </div>
+      <div class="card-hook">测测今天你是锦鲤体质还是水逆体质。<span class="card-arrow">开始测试 →</span></div>
+    </div>
+
+    <div class="disc">本页所有测试均为趣味娱乐内容，结果无科学依据，请理性看待。<br>测试数据仅保存在你的设备本地，不上传任何服务器。</div>
+  </section>
+
+  <!-- ===== 视图：答题 ===== -->
+  <section class="screen" id="view-quiz">
+    <div class="quiz-head">
+      <button class="back" onclick="goHome()" aria-label="返回首页">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+      </button>
+      <div class="quiz-title" id="quizTitle"></div>
+      <div class="quiz-count" id="quizCount"></div>
+    </div>
+    <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+    <div class="q-card">
+      <div class="q-emoji" id="qEmoji"></div>
+      <div class="q-text" id="qText"></div>
+      <div class="q-sub" id="qSub"></div>
+    </div>
+    <div class="options" id="qOptions"></div>
+  </section>
+
+  <!-- ===== 视图：结果 ===== -->
+  <section class="screen" id="view-result">
+    <div class="result-wrap">
+      <div class="result-card" id="resultCard">
+        <div class="r-label" id="rLabel"></div>
+        <div class="r-emoji" id="rEmoji"></div>
+        <div class="r-level" id="rLevel"></div>
+        <div class="r-score" id="rScore"></div>
+        <div class="r-bar"><i id="rBarFill"></i></div>
+        <div class="r-desc" id="rDesc"></div>
+        <div class="r-quote" id="rQuote"></div>
+      </div>
+      <div class="actions">
+        <button class="btn btn-primary" onclick="makePoster()">🖼 保存我的结果海报</button>
+        <div class="btn-row">
+          <button class="btn btn-ghost" onclick="copyShare()">✏️ 复制分享文案</button>
+          <button class="btn btn-ghost" onclick="goHome()">换一个测试</button>
+        </div>
+        <button class="btn btn-ghost" style="margin-top:10px" onclick="restartQuiz()">再测一次</button>
+      </div>
+      <div class="footer-note">趣味测试 · 仅供娱乐 · 结果无科学依据<br>海报可直接长按保存，发小红书 / 朋友圈 / 发给 TA</div>
+    </div>
+  </section>
+
+  <div class="toast" id="toast"></div>
+</div>
+
+<script>
+/* ============================================================
+ * 测试题库配置 —— 想换选题 / 新增测试，只需改这里的数组
+ * 三种题型：score 评分制 / type 分类计数制 / luck 趣味幸运值
+ * ============================================================ */
+var TESTS = [
+  {
+    id:'husband',
+    type:'score',
+    name:'老公合格率测试',
+    emoji:'💍',
+    tag:'评分 · 亲密关系',
+    hook:'及格线 60 分。不及格的，建议把结果发给他看看。',
+    fullScore:60,
+    goodText:'满分 100 分（原始满分 60 分）',
+    questions:[
+      {q:'他记得你们的纪念日吗？', options:[
+        {t:'记得，还会提前准备惊喜',s:10},
+        {t:'记得，但经常要靠手机提醒',s:6},
+        {t:'嘴上记得，真到那天总忘',s:4},
+        {t:'不记得，但说"每天都是纪念日"',s:2}
+      ]},
+      {q:'你随口说了一句"想吃XXX"，他会？', options:[
+        {t:'当天就安排上了',s:10},
+        {t:'记在备忘录里，找机会安排',s:8},
+        {t:'嘴上答应，转头就忘',s:4},
+        {t:'反问你"真的假的？"',s:2}
+      ]},
+      {q:'你们吵架之后，他一般？', options:[
+        {t:'先冷静，再主动来好好沟通',s:10},
+        {t:'马上服软来哄你',s:8},
+        {t:'冷战，等你先开口',s:3},
+        {t:'翻旧账，越吵越远',s:1}
+      ]},
+      {q:'在朋友面前，他怎么提起你？', options:[
+        {t:'三句不离你，藏不住的得意',s:10},
+        {t:'偶尔秀一下，点到为止',s:7},
+        {t:'很少主动提',s:4},
+        {t:'像没对象一样，只字不提',s:1}
+      ]},
+      {q:'你加班晚归，他会？', options:[
+        {t:'来接你，或者等到你到家',s:10},
+        {t:'提醒你注意安全，早点回家',s:8},
+        {t:'问一句"几点回"就没了',s:4},
+        {t:'你已经到家了，他才发现你加班',s:1}
+      ]},
+      {q:'手机和钱这类敏感话题，他的态度？', options:[
+        {t:'主动交代，坦坦荡荡',s:10},
+        {t:'问了就会说，不藏着',s:7},
+        {t:'支支吾吾，含糊带过',s:3},
+        {t:'手机密码是啥？没敢问过',s:1}
+      ]}
+    ],
+    results:[
+      {min:90, level:'神仙老公认证', emoji:'👑', desc:'这分数已经不是"合格"能概括的了。他把你放在心上这件事，证据确凿。建议把这份成绩单裱起来，或者发给他，让他膨胀两天再继续努力。', quote:'满分 100 分，他拿了 X 分 —— 属于"值得炫耀"那一挂。'},
+      {min:75, level:'合格老公 · 品质保障', emoji:'✅', desc:'有瑕疵，但整体能打，属于"值得续费"的类型。小毛病不是问题，大方向对就行。婚姻嘛，本来就是边过日子边互相修修补补。', quote:'满分 100 分，他拿了 X 分 —— 建议他继续保持，别骄傲。'},
+      {min:60, level:'踩线及格 · 还能抢救', emoji:'⚠️', desc:'刚好卡在及格线上，属于"还能抢救"的区间。把测试结果发给他，让他自己看着办——科学证明，会改的老公大多都是"被迫"改的。', quote:'满分 100 分，他拿了 X 分 —— 刚好及格，多一分都怕他骄傲。'},
+      {min:0, level:'不及格 · 建议约谈', emoji:'❌', desc:'分数说明了一切。别急着做决定，先开个家庭会议，把这份问卷当提纲，逐条聊。毕竟——本测试纯属娱乐，离婚请三思，民政局最近排队挺长的。', quote:'满分 100 分，他拿了 X 分 —— 别慌，先约谈，再观察，最后再决定。'}
+    ]
+  },
+  {
+    id:'personality',
+    type:'type',
+    name:'恋爱人格倾向测试',
+    emoji:'🎭',
+    tag:'倾向 · 人格画像',
+    hook:'你是粘人精、独行侠、恋爱脑还是清醒派？',
+    questions:[
+      {q:'周末一整天都没安排，你更想？', options:[
+        {t:'和TA黏在一起，哪都不去',k:'A'},
+        {t:'各安排各的，晚上再碰头',k:'B'},
+        {t:'只要TA在，做什么都行',k:'C'},
+        {t:'先把自己清单上的事做完',k:'D'}
+      ]},
+      {q:'TA半小时没回消息，你会？', options:[
+        {t:'连环追问"在干嘛"',k:'A'},
+        {t:'无所谓，我自己也忙着',k:'B'},
+        {t:'已经在脑补一整部连续剧',k:'C'},
+        {t:'TA肯定在忙，回头自然会回',k:'D'}
+      ]},
+      {q:'你喜欢一个人的方式是？', options:[
+        {t:'时刻报备，恨不得形影不离',k:'A'},
+        {t:'给彼此空间，偶尔制造惊喜',k:'B'},
+        {t:'把TA写进我所有的未来计划',k:'C'},
+        {t:'先观察确认，值得再全力投入',k:'D'}
+      ]},
+      {q:'TA突然说"今晚有事"，你会？', options:[
+        {t:'心凉半截，开始疯狂内耗',k:'A'},
+        {t:'正好，我也有自己的安排',k:'B'},
+        {t:'开始琢磨TA到底去干嘛',k:'C'},
+        {t:'接受现实，自己也出门找乐子',k:'D'}
+      ]},
+      {q:'你觉得理想的恋爱状态是？', options:[
+        {t:'天天见面，永远热恋期',k:'A'},
+        {t:'彼此独立，顶峰相见',k:'B'},
+        {t:'为TA付出一切我都愿意',k:'C'},
+        {t:'势均力敌，理性经营',k:'D'}
+      ]},
+      {q:'吵架/闹别扭之后，你一般？', options:[
+        {t:'立刻想和好，甚至愿意先低头',k:'A'},
+        {t:'冷静几天，想清楚了再说',k:'B'},
+        {t:'反复翻聊天记录，越想越委屈',k:'C'},
+        {t:'复盘原因，下次避免踩坑',k:'D'}
+      ]}
+    ],
+    types:{
+      A:{emoji:'🥰', level:'粘人精体质', desc:'你的恋爱关键词是"亲密"。你享受时刻被惦记、被回应，也愿意把全部热情都给对方。请记住：粘人不是缺点，但记得也给对方留一点呼吸的空间。', quote:'你不是离不开谁，你只是爱得比较用力。'},
+      B:{emoji:'🚀', level:'独行侠体质', desc:'你的恋爱关键词是"自由"。你相信好的感情是各自精彩、并肩前行，不查岗不内耗。独立是你的底气，也是你在关系里最迷人的地方。', quote:'你爱得很洒脱，这种松弛感真的会让人上瘾。'},
+      C:{emoji:'💘', level:'恋爱脑体质', desc:'你的恋爱关键词是"投入"。你容易把对方当成全世界，喜怒哀乐都跟着TA走。爱得热烈没错，但记得：你才是自己人生的主角。', quote:'恋爱脑本人了，但你值得被同等认真地对待。'},
+      D:{emoji:'🧊', level:'清醒派体质', desc:'你的恋爱关键词是"理性"。你习惯先看清再投入，情绪稳定、边界清晰。在别人眼里你冷静得可怕，其实你只是不想被爱情冲昏头。', quote:'清醒的人也在认真爱人，只是爱得更稳。'}
+    }
+  },
+  {
+    id:'luck',
+    type:'luck',
+    name:'今日幸运指数测试',
+    emoji:'🍀',
+    tag:'运势 · 今日彩头',
+    hook:'测测今天你是锦鲤体质还是水逆体质。',
+    fullScore:50,
+    goodText:'满分 50 分',
+    questions:[
+      {q:'今早睁开眼的第一感觉？', options:[
+        {t:'元气满满，睡饱了',s:8},
+        {t:'困但能撑，问题不大',s:5},
+        {t:'被闹钟吓醒，灵魂出窍',s:3},
+        {t:'不想面对世界，但还得起',s:2}
+      ]},
+      {q:'今天出门的天气是？', options:[
+        {t:'大晴天，阳光正好',s:8},
+        {t:'多云，不晒不热',s:5},
+        {t:'下雨了',s:3},
+        {t:'无所谓，我心情就是晴天',s:7}
+      ]},
+      {q:'今天要处理的事多吗？', options:[
+        {t:'就一件大事，搞定就收工',s:8},
+        {t:'两三件，能安排明白',s:6},
+        {t:'一堆琐事排队等我',s:3},
+        {t:'今天休息，无事一身轻',s:9}
+      ]},
+      {q:'早上有没有遇到小确幸？', options:[
+        {t:'有！咖啡没排队/地铁有位子',s:8},
+        {t:'平平无奇，没啥特别',s:5},
+        {t:'出门就遇到糟心事',s:2},
+        {t:'捡到1块钱……算吗？',s:6}
+      ]},
+      {q:'此刻你的能量值是？', options:[
+        {t:'满格，可以打一天',s:9},
+        {t:'七成左右，够用',s:6},
+        {t:'五成，省着点花',s:4},
+        {t:'电量告急，全靠意志力',s:2}
+      ]},
+      {q:'凭直觉：今天会有好事发生吗？', options:[
+        {t:'会！我的预感一向很准',s:8},
+        {t:'应该会吧，保持期待',s:6},
+        {t:'不好说，看缘分',s:4},
+        {t:'不抱希望就不会失望',s:3}
+      ]}
+    ],
+    results:[
+      {min:42, level:'锦鲤附体', emoji:'🐟', desc:'今天的你是天选幸运儿体质！想做的事大胆去做，想约的人放心去约，好运气正排着队等你。建议顺手买张彩票（就一块钱那种）。', quote:'今天的你，走路都自带 BGM。'},
+      {min:32, level:'小确幸体质', emoji:'✨', desc:'今天整体顺风顺水，小惊喜会不时冒出来。保持现在的节奏，该来的好事一件都不会少，运气这东西，信则有，动则灵。', quote:'平平淡淡里有小惊喜，这就是好日子。'},
+      {min:24, level:'平平淡淡体质', emoji:'🌤', desc:'今天没什么大风大浪，也没什么大起大落，稳就是今天的主旋律。适合按计划做事、早睡早起，把好状态攒到明天。', quote:'稳中带进，才是普通人的小智慧。'},
+      {min:0, level:'水逆体质 · 请转发锦鲤', emoji:'🌊', desc:'今天可能有点小不顺，出门多留个心眼，重要的事多检查一遍。别慌，水逆是暂时的，明天太阳照常升起，好运也会回来的。', quote:'今天不宜冲动消费，宜转发锦鲤（并早睡）。'}
+    ]
+  }
+];
+
+/* ============ 状态 ============ */
+var state = {view:'home', testId:null, idx:0, answers:[], result:null};
+var lastResult = null; // 存到 localStorage，方便回访
+
+/* ============ 视图切换 ============ */
+function show(view){
+  document.querySelectorAll('.screen').forEach(function(s){s.classList.remove('active')});
+  document.getElementById('view-'+view).classList.add('active');
+  state.view = view;
+  window.scrollTo(0,0);
+}
+</script>
+</body>
+</html>
+<script>
+/* ============ 测试流程 ============ */
+function getTest(id){
+  for(var i=0;i<TESTS.length;i++) if(TESTS[i].id===id) return TESTS[i];
+  return TESTS[0];
+}
+function startTest(id){
+  var t = getTest(id);
+  state.testId = id; state.idx = 0; state.answers = [];
+  document.getElementById('quizTitle').textContent = t.name;
+  renderQuiz();
+  show('quiz');
+}
+function restartQuiz(){ if(state.testId) startTest(state.testId); }
+function goHome(){ show('home'); }
+
+function renderQuiz(){
+  var t = getTest(state.testId);
+  var q = t.questions[state.idx];
+  document.getElementById('quizCount').textContent = (state.idx+1)+' / '+t.questions.length;
+  var fill = document.getElementById('progressFill');
+  fill.style.animation='none';
+  void fill.offsetWidth;
+  fill.style.animation='';
+  fill.style.width = ((state.idx+1)/t.questions.length*100)+'%';
+  document.getElementById('qEmoji').textContent = q.q;
+  document.getElementById('qText').textContent = q.q;
+  document.getElementById('qSub').textContent = t.hook;
+  var box = document.getElementById('qOptions');
+  box.innerHTML = '';
+  var keys = ['A','B','C','D'];
+  q.options.forEach(function(op,i){
+    var b = document.createElement('button');
+    b.className = 'opt';
+    b.innerHTML = '<span class="opt-key">'+keys[i]+'</span><span>'+op.t+'</span>';
+    b.onclick = function(){ choose(i); };
+    box.appendChild(b);
+  });
+  window.scrollTo(0,0);
+}
+
+function choose(i){
+  var t = getTest(state.testId);
+  var opts = document.querySelectorAll('#qOptions .opt');
+  for(var j=0;j<opts.length;j++) opts[j].classList.remove('sel');
+  opts[i].classList.add('sel');
+  state.answers.push(i);
+  setTimeout(function(){
+    if(state.idx+1 < t.questions.length){
+      state.idx++;
+      renderQuiz();
+    }else{
+      showResult();
+    }
+  }, 260);
+}
+
+/* ============ 结果计算 ============ */
+function computeResult(){
+  var t = getTest(state.testId);
+  var res = {test:t, raw:0, score:0, level:null, desc:'', quote:''};
+  if(t.type==='type'){
+    var counts = {A:0,B:0,C:0,D:0};
+    // 按答案顺序取 key 计数
+    state.answers.forEach(function(ai, qi){
+      var k = t.questions[qi].options[ai].k;
+      counts[k]++;
+    });
+    var top = 'A', max = 0;
+    for(var key in counts){ if(counts[key]>max){ max=counts[key]; top=key; } }
+    var tp = t.types[top];
+    res.raw = max; // 命中数
+    res.score = Math.round(max/t.questions.length*100);
+    res.level = tp;
+    res.percent = res.score;
+  }else{
+    var total = 0;
+    state.answers.forEach(function(ai, qi){
+      total += t.questions[qi].options[ai].s;
+    });
+    res.raw = total;
+    res.score = Math.round(total/t.fullScore*100);
+    var r = null;
+    t.results.forEach(function(x){ if(res.score>=x.min && !r) r=x; });
+    if(!r) r = t.results[t.results.length-1];
+    res.level = r;
+    res.desc = r.desc;
+    res.quote = r.quote.replace(/X/g, String(res.score));
+    res.percent = res.score;
+  }
+  return res;
+}
+
+function showResult(){
+  var res = computeResult();
+  state.result = res;
+  lastResult = res;
+  try{ localStorage.setItem('xhsTestLast', JSON.stringify({id:res.test.id, score:res.score, raw:res.raw})); }catch(e){}
+
+  document.getElementById('rLabel').textContent = res.test.name;
+  document.getElementById('rEmoji').textContent = res.level.emoji;
+  document.getElementById('rLevel').textContent = res.level.level;
+  var scoreEl = document.getElementById('rScore');
+  if(res.test.type==='type'){
+    scoreEl.innerHTML = res.score+'<span class="unit">% '+res.level.level+' 浓度</span>';
+  }else{
+    scoreEl.innerHTML = res.score+'<span class="unit"> 分 / 100</span>';
+  }
+  var bar = document.getElementById('rBarFill');
+  bar.style.width = '0';
+  setTimeout(function(){ bar.style.width = Math.max(res.percent,4)+'%'; }, 80);
+
+  var desc = document.getElementById('rDesc');
+  desc.innerHTML = '';
+  var d = document.createElement('div');
+  d.style.fontWeight='700'; d.style.marginBottom='6px';
+  d.textContent = (res.test.type==='type' ? '你的人格画像' : '测试解读');
+  desc.appendChild(d);
+  var p = document.createElement('p');
+  p.textContent = res.level.desc;
+  desc.appendChild(p);
+
+  document.getElementById('rQuote').textContent = res.quote || (res.test.type==='type' ? res.level.quote : '');
+
+  // 分数滚动动画
+  animateScore(scoreEl.querySelector('.unit') ? scoreEl.firstChild : scoreEl, res.score);
+  show('result');
+}
+
+function animateScore(el, target){
+  var cur = 0, step = Math.max(1, Math.round(target/40));
+  var timer = setInterval(function(){
+    cur += step;
+    if(cur>=target){ cur=target; clearInterval(timer); }
+    el.textContent = String(cur);
+  }, 26);
+}
+
+/* ============ 海报生成 (1080x1440, 小红书 3:4) ============ */
+function makePoster(){
+  var res = lastResult || (state.result || computeResult());
+  var t = res.test;
+  var W=1080, H=1440;
+  var cv = document.createElement('canvas');
+  cv.width=W; cv.height=H;
+  var ctx = cv.getContext('2d');
+
+  // 背景渐变
+  var g = ctx.createLinearGradient(0,0,0,H);
+  g.addColorStop(0,'#FF5A6E'); g.addColorStop(.55,'#FF7A66'); g.addColorStop(1,'#FF9A5C');
+  ctx.fillStyle=g; ctx.fillRect(0,0,W,H);
+
+  // 装饰圆
+  ctx.fillStyle='rgba(255,255,255,.10)';
+  ctx.beginPath(); ctx.arc(970,150,170,0,Math.PI*2); ctx.fill();
+  ctx.beginPath(); ctx.arc(110,1260,220,0,Math.PI*2); ctx.fill();
+  ctx.fillStyle='rgba(255,255,255,.07)';
+  ctx.beginPath(); ctx.arc(60,180,90,0,Math.PI*2); ctx.fill();
+
+  // 顶部徽标
+  ctx.fillStyle='rgba(255,255,255,.92)';
+  ctx.font='600 30px "PingFang SC","Microsoft YaHei",sans-serif';
+  ctx.textAlign='center';
+  ctx.fillText('趣味实验室 · 全网疯传', W/2, 108);
+  ctx.fillStyle='rgba(255,255,255,.75)';
+  ctx.font='400 30px "PingFang SC","Microsoft YaHei",sans-serif';
+  ctx.fillText(t.name, W/2, 168);
+
+  // 中央 emoji
+  ctx.font='150px "PingFang SC",sans-serif';
+  ctx.fillText(res.level.emoji, W/2, 390);
+
+  // 分数
+  var scoreStr = String(res.score);
+  ctx.fillStyle='#FFFFFF';
+  ctx.font='900 250px "PingFang SC","Microsoft YaHei",sans-serif';
+  ctx.fillText(scoreStr, W/2, 640);
+  ctx.fillStyle='rgba(255,255,255,.85)';
+  ctx.font='700 44px "PingFang SC","Microsoft YaHei",sans-serif';
+  ctx.fillText(t.type==='type' ? '恋爱人格 · 浓度指数' : '满分 100 分 · 趣味评分', W/2, 716);
+
+  // 等级标签
+  ctx.font='700 54px "PingFang SC","Microsoft YaHei",sans-serif';
+  var lvText = res.level.level;
+  var tw = ctx.measureText(lvText).width + 90;
+  var ly = 810;
+  roundRect(ctx, W/2-tw/2, ly-42, tw, 84, 42);
+  ctx.fillStyle='#FFFFFF';
+  ctx.fill();
+  ctx.fillStyle='#FF4A5E';
+  ctx.fillText(lvText, W/2, ly+16);
+
+  // 0-100 刻度条
+  var bx=150, bw=W-300, by=940;
+  ctx.fillStyle='rgba(255,255,255,.35)';
+  roundRect(ctx, bx, by, bw, 18, 9); ctx.fill();
+  ctx.fillStyle='#FFFFFF';
+  var pct = Math.max(0.04, Math.min(1, res.percent/100));
+  roundRect(ctx, bx, by, bw*pct, 18, 9); ctx.fill();
+  ctx.fillStyle='rgba(255,255,255,.8)';
+  ctx.font='400 30px "PingFang SC","Microsoft YaHei",sans-serif';
+  ctx.fillText('0', bx-14, by+52);
+  ctx.fillText('100', bx+bw-22, by+52);
+
+  // 白卡描述
+  var cardY = 1040, cardH = 270;
+  roundRect(ctx, 80, cardY, W-160, cardH, 40);
+  ctx.fillStyle='#FFF6F3'; ctx.fill();
+  ctx.fillStyle='#33202A';
+  ctx.font='700 42px "PingFang SC","Microsoft YaHei",sans-serif';
+  ctx.textAlign='left';
+  ctx.fillText(res.level.level+'，结果如下', 140, cardY+72);
+  ctx.font='400 34px "PingFang SC","Microsoft YaHei",sans-serif';
+  ctx.fillStyle='#6A4F5C';
+  wrapText(ctx, res.level.desc, 140, cardY+136, W-280, 50, 3);
+
+  // 底部
+  ctx.textAlign='center';
+  ctx.fillStyle='rgba(255,255,255,.9)';
+  ctx.font='700 40px "PingFang SC","Microsoft YaHei",sans-serif';
+  ctx.fillText('长按保存 · 分享给TA看看', W/2, 1346);
+  ctx.fillStyle='rgba(255,255,255,.72)';
+  ctx.font='400 30px "PingFang SC","Microsoft YaHei",sans-serif';
+  ctx.fillText('小红书 @你的账号昵称 ｜ 趣味测试 · 仅供娱乐', W/2, 1396);
+
+  // 展示大图
+  var url = cv.toDataURL('image/png');
+  showPosterModal(url);
+}
+
+function roundRect(ctx,x,y,w,h,r){
+  ctx.beginPath();
+  ctx.moveTo(x+r,y);
+  ctx.arcTo(x+w,y,x+w,y+h,r);
+  ctx.arcTo(x+w,y+h,x,y+h,r);
+  ctx.arcTo(x,y+h,x,y,r);
+  ctx.arcTo(x,y,x+w,y,r);
+  ctx.closePath();
+}
+function wrapText(ctx,text,x,y,maxW,lineH,maxLines){
+  var line = '';
+  var count = 0;
+  for(var i=0;i<text.length;i++){
+    line += text[i];
+    if(ctx.measureText(line).width > maxW){
+      if(count >= maxLines-1){
+        var cut = line.slice(0,-1);
+        while(cut.length>1 && ctx.measureText(cut+'…').width > maxW) cut = cut.slice(0,-1);
+        ctx.fillText(cut+'…', x, y);
+        return;
+      }
+      ctx.fillText(line.slice(0,-1), x, y);
+      line = text[i];
+      y += lineH;
+      count++;
+    }
+  }
+  if(line) ctx.fillText(line, x, y);
+}
+
+/* ============ 海报预览弹层 ============ */
+function showPosterModal(url){
+  var old = document.getElementById('posterModal');
+  if(old) old.remove();
+  var m = document.createElement('div');
+  m.id='posterModal';
+  m.style.cssText='position:fixed;inset:0;background:rgba(20,8,12,.82);z-index:100;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px;';
+  var img = document.createElement('img');
+  img.src=url;
+  img.style.cssText='max-width:86vw;max-height:68vh;border-radius:16px;box-shadow:0 20px 60px rgba(0,0,0,.4);';
+  var hint = document.createElement('div');
+  hint.textContent='手机端：长按图片即可保存 · 电脑端：右键另存';
+  hint.style.cssText='color:#fff;font-size:13px;margin-top:16px;';
+  var dl = document.createElement('a');
+  dl.href=url; dl.download='我的测试海报.png';
+  dl.textContent='下载海报';
+  dl.style.cssText='display:inline-block;margin-top:10px;padding:12px 34px;border-radius:999px;background:linear-gradient(135deg,#FF5A6E,#FF8A5C);color:#fff;font-size:15px;font-weight:700;text-decoration:none;';
+  var close = document.createElement('button');
+  close.textContent='关 闭';
+  close.style.cssText='margin-top:14px;padding:10px 26px;border-radius:999px;border:1px solid rgba(255,255,255,.5);background:transparent;color:#fff;font-size:14px;cursor:pointer;';
+  close.onclick=function(){ m.remove(); };
+  m.appendChild(img); m.appendChild(hint); m.appendChild(dl); m.appendChild(close);
+  document.body.appendChild(m);
+}
+
+/* ============ 复制分享文案 ============ */
+function copyShare(){
+  var res = lastResult || (state.result || computeResult());
+  var t = res.test;
+  var txt = '我做了「'+t.name+'」结果：'+res.score+' 分 · '+res.level.level+' '+res.level.emoji+'\n'+
+            (res.quote||res.level.quote)+'\n\n'+
+            '你也来测测看，结果真的会很离谱👇\n#'+t.name.replace(/测试$/,'')+' #趣味测试 #测过的人都沉默了';
+  function done(){ toast('分享文案已复制，去发笔记吧 ✨'); }
+  function fallback(){
+    var ta=document.createElement('textarea');
+    ta.value=txt; ta.style.position='fixed'; ta.style.opacity='0';
+    document.body.appendChild(ta); ta.select();
+    try{ document.execCommand('copy'); done(); }catch(e){ toast('复制失败，请手动复制'); }
+    ta.remove();
+  }
+  if(navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(txt).then(done).catch(fallback);
+  }else{ fallback(); }
+}
+
+/* ============ Toast ============ */
+var toastTimer=null;
+function toast(msg){
+  var el=document.getElementById('toast');
+  el.textContent=msg;
+  el.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer=setTimeout(function(){ el.classList.remove('show'); }, 2200);
+}
+
+/* ============ 回访恢复上次结果 ============ */
+(function(){
+  try{
+    var saved = JSON.parse(localStorage.getItem('xhsTestLast')||'null');
+    if(saved && saved.id){
+      var t = getTest(saved.id);
+      // 重新计算不可能，直接展示保存快照分数对应的等级
+      // 为简单起见，仅展示首页；如需恢复结果可在此扩展
+    }
+  }catch(e){}
+})();
+</script>
+<!-- （注：内容由AI生成） -->
